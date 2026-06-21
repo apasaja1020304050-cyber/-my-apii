@@ -209,7 +209,31 @@ class handler(BaseHTTPRequestHandler):
             self.send_json({
                 "message": "Endpoint tidak ditemukan"
             })
+# =====================
+# ADMIN: DELETE KEY
+# =====================
+elif self.path == "/api/admin/delete_key":
 
+    if not is_admin(self.headers):
+        return self.send_json({"error": "unauthorized"})
+
+    key = data.get("key")
+
+    supabase.table("licenses") \
+        .delete() \
+        .eq("license_key", key) \
+        .execute()
+
+    self.send_json({
+        "success": True,
+        "message": "Key deleted"
+    })
+
+else:
+    self.send_json({
+        "message": "Endpoint tidak ditemukan"
+    })
+    
     # =========================
     # JSON RESPONSE HELPER
     # =========================
