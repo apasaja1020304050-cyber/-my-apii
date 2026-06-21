@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 import json
+import os
 
 VALID_KEYS = [
     "UCGGFREE111"
