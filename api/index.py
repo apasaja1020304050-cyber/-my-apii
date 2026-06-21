@@ -39,16 +39,16 @@ def check_license(key):
     if row.get("status") != "active":
         return False
 
-    # cek expiry
-    expires_at = row.get("expires_at")
+    # cek expired
+    expired_at = row.get("expired_at")
 
-    if expires_at:
+    if expired_at:
         try:
-            expire_date = datetime.fromisoformat(
-                expires_at.replace("Z", "+00:00")
+            expired_date = datetime.fromisoformat(
+                expired_at.replace("Z", "+00:00")
             )
 
-            if expire_date < datetime.now(expire_date.tzinfo):
+            if expired_date < datetime.now(expired_date.tzinfo):
                 return False
 
         except:
@@ -135,12 +135,12 @@ class handler(BaseHTTPRequestHandler):
                 return self.send_json({"error": "unauthorized"})
 
             key = data.get("key")
-            expires_at = data.get("expires_at")
+            expired_at = data.get("expired_at")
 
             supabase.table("licenses").insert({
                 "license_key": key,
                 "status": "active",
-                "expires_at": expires_at
+                "expired_at": expired_at
             }).execute()
 
             self.send_json({
