@@ -135,10 +135,12 @@ class handler(BaseHTTPRequestHandler):
                 return self.send_json({"error": "unauthorized"})
 
             key = data.get("key")
+            username = data.get("username")
             expired_at = data.get("expired_at")
 
             supabase.table("licenses").insert({
                 "license_key": key,
+                "username": username,
                 "status": "active",
                 "expired_at": expired_at
             }).execute()
